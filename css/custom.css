@@ -1,0 +1,17 @@
+.hidden {
+	display: none;
+}
+.dropzone {
+	width: 100%;
+	height: 200px;
+	border: 1px solid;
+}
+.dz-image-preview {
+	text-align: center;
+	margin: 0 auto;
+	display: block;
+}
+.userData {
+	width: 100%;
+	margin-bottom: 10px;
+}
