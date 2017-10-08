@@ -32,7 +32,7 @@ app.get('/pwd/', function(req, res){
 });
 
 
-var	server = require('http').createServer(app), io = require('socket.io').listen(server);
+var server = require('http').createServer(app), io = require('socket.io').listen(server);
 
 
 function validLogin(user, hash) {
