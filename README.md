@@ -21,4 +21,4 @@ This project was a quick response to the failure with working with CosmosOS. So 
 
 ### Our website:
 
- * [hecking.tech](http://hecking.tech) - Currently still being registered by [get.tech](http://get.tech)
+ * [hecking.tech](http://hecking.tech:8070) - Currently being registered by [get.tech](http://get.tech)
