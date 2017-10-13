@@ -1,94 +1,92 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <script src="js/jquery.min.js"></script>
-  	<script src="js/socket.io.min.js"></script>
+    <script src="js/socket.io.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-	<script src="js/md5.min.js"></script>
-	<script src="js/core.js"></script>
-	<script src="js/dropzone.min.js"></script>
-	<link rel="stylesheet" href="css/dropzone.css">
+    <script src="js/md5.min.js"></script>
+    <script src="js/core.js"></script>
+    <script src="js/dropzone.min.js"></script>
+    <link rel="stylesheet" href="css/dropzone.css">
     <link rel="stylesheet" href="css/custom.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
-	<title>Password Manager</title>
+    <title>Password Manager</title>
 </head>
 <body>
   <nav class="navbar navbar-default">
     <div class="container-fluid">
       <div class="navbar-header">
-        <a class="navbar-brand">
-          <p>Password Manager</p>
-        </a>
+        <a class="navbar-brand">Password Manager</a>
       </div>
     </div>
   </nav>
-  
+
   <div id="formStuff" class="container-fluid">
     <form class="col-md-4 col-md-offset-4 form-group">
-	  <input type="text" placeholder="Username" class="userData"></input>
+      <input type="text" placeholder="Username" class="userData"></input>
       <input type="file" class="dropzone" id="my-dropzone"></input>
-	  <br/>
-	  <button id="loginButton" type="submit" class="btn btn-primary btn-lg btn-block">Login</button>
+      <br/>
+      <button id="loginButton" type="submit" class="btn btn-primary btn-lg btn-block">Login</button>
     </form>
   </div>
 
-	<script type="text/javascript">
+    <script type="text/javascript">
 
-	$(function () {
-		var hash;
-		var socket = io();
-		socket.connect('127.0.0.1:8070', { autoConnect: true});
-		
-		$('input').change(function() {
-			
-			var $i = $('.dropzone'), input = $i[0];
-			if ( input.files && input.files[0] ) {
-				file = input.files[0]; // The file
-				fr = new FileReader(); // FileReader instance
-				fr.onload = function () {
-					hash = md5(CryptoJS.lib.WordArray.create(fr.result));
-				};
-				fr.readAsDataURL( file );
-			}
-		});
+    $(function () {
+        var hash;
+        var socket = io();
+        socket.connect('127.0.0.1:8070', { autoConnect: true});
 
-		function allowDrop(ev) {
-			ev.preventDefault();
-		}
+        $('input').change(function() {
 
-		function drag(ev) {
-			ev.dataTransfer.setData("text", ev.target.id);
-		}
+            var $i = $('.dropzone'), input = $i[0];
+            if ( input.files && input.files[0] ) {
+                file = input.files[0]; // The file
+                fr = new FileReader(); // FileReader instance
+                fr.onload = function () {
+                    hash = md5(CryptoJS.lib.WordArray.create(fr.result));
+                };
+                fr.readAsDataURL( file );
+            }
+        });
 
-		function drop(ev) {
-			ev.preventDefault();
-			var data = ev.dataTransfer.getData("text");
-			ev.target.appendChild(document.getElementById(data));
-		}
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
 
-		socket.on("LoginCorrect",function(data) {
-			if (data == true) {
-				$("#formStuff").addClass('hidden');
-			}
-			console.log(data);
-		});
-		
-		socket.on('redirect', function(destination) {
-			window.location.href = document.location.origin + destination;
-		});
-		
-		$('form').submit(function(){
-			if ($('.dropzone').val().trim() != '' || $('.userData').val().trim() != '') {
-				socket.emit('Login', $('.userData').val() + ":" + hash);
-			} else {
-				alert("Please attach your file and/or fill out your username.");
-			}
-			return false;
-		});
-	});
-	</script>
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            ev.target.appendChild(document.getElementById(data));
+        }
+
+        socket.on("LoginCorrect",function(data) {
+            if (data == true) {
+                $("#formStuff").addClass('hidden');
+            }
+            console.log(data);
+        });
+
+        socket.on('redirect', function(destination) {
+            window.location.href = document.location.origin + destination;
+        });
+
+        $('form').submit(function(){
+            if ($('.dropzone').val().trim() != '' || $('.userData').val().trim() != '') {
+                socket.emit('Login', $('.userData').val() + ":" + hash);
+            } else {
+                alert("Please attach your file and/or fill out your username.");
+            }
+            return false;
+        });
+    });
+    </script>
 
 </body>
 </html>
